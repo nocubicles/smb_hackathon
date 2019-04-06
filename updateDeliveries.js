@@ -6,13 +6,13 @@ const hostName = credentialsUpdateDeliveries.hostName;
 const soap = require('soap');
 const path = require('path');
 const util = require('util')
-var fs = require('fs');
+const fs = require('fs');
 
 const endPointQueryDelivery = `https://${hostName}.sapbydesign.com/sap/bc/srt/scs/sap/queryoutbounddeliveryin?sap-vhost=${hostName}.sapbydesign.com`;
 const endPointReadandUpdateDelivery = `https://${hostName}.sapbydesign.com/sap/bc/srt/scs/sap/yy83u8cg2y_zoutbounddeliveryup?sap-vhost=${hostName}.sapbydesign.com`;
 
-var WSDLQuery = path.resolve("QueryDeliveries.wsdl");
-var WSDLReadandUpdateDelivery = path.resolve("ManageOutboundDeliveries.wsdl");
+const WSDLQuery = path.resolve("QueryDeliveries.wsdl");
+const WSDLReadandUpdateDelivery = path.resolve("ManageOutboundDeliveries.wsdl");
 
 const deliveries = require('./deliveriesTest.js')
 
@@ -93,7 +93,6 @@ function queryDelivery(delivery) {
         }
 
         soap.createClient(WSDLQuery, options, function (err, client) {
-            //if (err) throw new Error("ciao");
 
             if (err) throw new Error(err);
 
@@ -141,12 +140,8 @@ function getDeliveryItems(UUID) {
 
             if (err) throw new Error(err);
 
-
-
-
             client.setEndpoint(endPointReadandUpdateDelivery);
             client.setSecurity(new soap.BasicAuthSecurity(credentialsUpdateDeliveries.user, credentialsUpdateDeliveries.password));
-
 
             client.Read(args, function (err, res) {
 
@@ -156,7 +151,6 @@ function getDeliveryItems(UUID) {
                     fs.appendFileSync('errorLog', "Error with Second step" + util.inspect(err, false, null, true))
                     resolve(err)
                 }
-
 
                 if (!err) {
                     resolve(res.OutboundDelivery)
